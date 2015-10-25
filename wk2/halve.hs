@@ -9,5 +9,8 @@ halve3 xs = splitAt (div (length xs) 2) xs
 halve4 xs = (take n xs, drop n xs)
   where n = length xs `div` 2
 
+halve5 = \ xs -> (take n xs, drop n xs)
+  where n = length xs `div` 2
+
 -- stated condition : xs is even-lengthed
 xs = [1, 2, 3, 4, 5, 6]
