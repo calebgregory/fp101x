@@ -6,6 +6,10 @@ positions x xs =
   find x (zip xs [0..n])
   where n = length xs - 1
 
+-- alternatively,
+positions2 x xs =
+  [i | (x', i) <- zip xs [0..n], x == x']
+  where n = length xs - 1
 
 -- should refurn ["a","c","d"]
 test = find 1 [(1,"a"),(0,"b"),(1,"c"),(1,"d"),(0,"e")]
