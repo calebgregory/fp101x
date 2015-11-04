@@ -54,8 +54,15 @@ test1 = [(n == evalRev (toDigitsRev n)),
 -- Ex. 2
 -- ===================================
 
+-- > doubleSecond[8,7,6,5]
+-- [8,14,6,10]
+
 doubleSecond :: [Integer] -> [Integer]
-doubleSecond = undefined
+doubleSecond []       = []
+doubleSecond (y:[])   = [y]
+doubleSecond (x:y:xs) = x : (y * 2) : doubleSecond(xs)
+
+test2 = (doubleSecond [1,2,3,4] == [1,4,3,8])
 
 -- ===================================
 -- Ex. 3
