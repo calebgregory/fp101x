@@ -80,7 +80,8 @@ test3 = [(sumDigits [8,14,6,10] == 20),
 -- ===================================
 
 isValid :: Integer -> Bool
-isValid = undefined
+isValid n = (s `mod` 10 == 0)
+  where s = sumDigits (doubleSecond (toDigitsRev n))
 
 
 -- ===================================
