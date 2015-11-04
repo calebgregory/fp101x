@@ -69,8 +69,11 @@ test2 = (doubleSecond [1,2,3,4] == [1,4,3,8])
 -- ===================================
 
 sumDigits :: [Integer] -> Integer
-sumDigits = undefined
+sumDigits [] = 0
+sumDigits (x:xs) = sum (toDigits x) + sumDigits xs
 
+test3 = [(sumDigits [8,14,6,10] == 20),
+         (sumDigits [3,9,4,15,8] == 30)]
 
 -- ===================================
 -- Ex. 4
