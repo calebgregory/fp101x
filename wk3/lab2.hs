@@ -29,7 +29,7 @@ toDigits :: Integer -> [Integer]
 toDigits 0 = []
 toDigits x = toDigits (x `div` 10) ++ [x `mod` 10]
 
-n = 10
+n = 1234
 eval xs = foldl (\x y -> y + (10 * x)) 0 xs
 
 test0 = [(eval (toDigits n) == n),
@@ -44,7 +44,7 @@ toDigitsRev :: Integer -> [Integer]
 toDigitsRev 0 = []
 toDigitsRev x = (x `mod` 10) : toDigitsRev (x `div` 10)
 
-evalRev xs = foldr (\x y -> y + (10 * x)) 0 xs
+evalRev xs = foldr (\x y -> x + (10 * y)) 0 xs
 
 test1 = [(n == evalRev (toDigitsRev n)),
          (all (\d -> d >= 0 && d < 10) (toDigitsRev n)),
