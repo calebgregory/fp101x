@@ -10,11 +10,13 @@ twice f x = f (f x)
 -- (takes a function as its first argument)
 ```
 
+```
 twice = \f -> \x -> f (f x)
+```
 
 ## Why are they useful?
 
-- _common programming idions_ can be encoded as functions within the
+- _common programming idioms_ can be encoded as functions within the
 language itself
 
 - _domain specific languages_ can be defined as collections of
@@ -74,11 +76,11 @@ filter p (x:xs)
 ## foldr
 
 the functions `map` and `filter` have a similar structure - they're both
-defined inductively over the structure of the list.
+_defined inductively over the structure of the list_.
 
 since we are _lazy_ programmers, we want to capture that pattern into
-yet another higher-order function, that we can then use to define filter
-and map - or, in fact, as many functions as possible. that function that
+yet another higher-order function, that we can then use to define `filter`
+and `map` - or, in fact, as many functions as possible. that function that
 captures recursively descending over the structure of a list is called
 `foldr`. there is also a function `foldl`. the `l` and `r` here simply
 indicate the direction of the fold - from left or right, respectively.
@@ -91,12 +93,12 @@ f (x:xs) = x (+) f xs
   -- and f of its tail
 ```
 `f` traverses the list and replaces the empty list with `v`, and that
-replaces every occurrence of `cons` with`(+)`. /here `(+)` is not
+replaces every occurrence of `cons` with`(+)`. _here `(+)` is not
 signifying the function 'plus' but rather is a general placeholder for
-any function, e.g. `(*)`, `:`, or `++`./
+any function, e.g. `(*)`, `:`, or `++`._
 
-`f` is a homomorphism over the list - it respects the structure of the
-list.
+`f` is a [homomorphism](http://www.wikiwand.com/en/Homomorphism) over
+the list - it respects the structure of the list.
 
 the higher-order library function `foldr` (fold right) encapsulates this
 simple pattern of recursion with the function `(+)` and the value `v` as
@@ -104,13 +106,13 @@ its arguments.
 
 Here are a few examples:
 ```
-sum []     = 0                   -- v   = 0
+sum []     = 0                   --   v = 0
 sum (x:xs) = x + sum xs          -- (+) = +
 
-product []     = 1               -- v   = 1
+product []     = 1               --   v = 1
 product (x:xs) = x * product xs  -- (+) = *
 
-and []     = True                -- v   = True
+and []     = True                --   v = True
 and (x:xs) = x && and xs         -- (+) = &&
 ```
 redefined using `foldr`:
@@ -152,7 +154,8 @@ for example,
 ```
 sum [1,2,3]
 = foldr (+) 0 [1,2,3]
-= foldr (+) 0 (1:(2:(3:[]))) -- replace each (:) with (+) and [] with 0
+= foldr (+) 0 (1:(2:(3:[])))
+-- replace each (:) with (+) and [] with 0
 = 1+(2+(3+0))
 = 6
 ```
@@ -162,7 +165,8 @@ passed as the parameters to `foldr`.
 ```
 product [1,2,3]
 = foldr (*) 1 [1,2,3]
-= foldr (*) 1 (1:(2:(3:[]))) -- replace each (:) with (*) and [] with 1
+= foldr (*) 1 (1:(2:(3:[])))
+-- replace each (:) with (*) and [] with 1
 = 1*(2*(3*1))
 = 6
 ```
@@ -181,7 +185,8 @@ it can be defined
 ```
 length [1,2,3]
 = length (1:(2:(3:[])))
-= 1+(1+(1+0)) -- replaces each (:) by (\_ n -> 1 + n) and [] by 0
+-- replaces each (:) by (\_ n -> 1 + n) and [] by 0
+= 1+(1+(1+0))
 = 3
 -- hence,
 length = foldr (\_ n -> 1+n) 0
@@ -195,8 +200,9 @@ it can be defined
 
 ```
 reverse [1,2,3]
-= reverse (1:(2:(3:[])))      -- replace each (:) with (\x xs ->
-= (([] ++ [3]) ++ [2]) ++ [1] -- xs ++ [x]) and [] with [].
+= reverse (1:(2:(3:[])))
+-- replace each (:) with (\x xs -> xs ++ [x]) and [] with [].
+= (([] ++ [3]) ++ [2]) ++ [1]
 = [3,2,1]
 -- hence,
 reverse = foldr (\x xs -> xs ++ [x]) []
@@ -206,7 +212,6 @@ compact definition using `foldr`:
 ```
 (++ ys) = foldr (:) ys -- replace each (:) by (:) and [] by ys
 ```
-now if we write this in pointfree style,
 
 ### why is foldr useful?
 - some recursive functions on lists, such as `sum` are _simpler_ to
@@ -225,7 +230,7 @@ be optimized if you write them in this higher-order pattern.
 
 ## composition
 
-the library function (.) returns the _composition_ of two functions as a single
+the library function `(.)` returns the _composition_ of two functions as a single
 function.
 
 ```
@@ -246,13 +251,14 @@ odd  = not . even
 -- this definition uses 'pointfree' style.
 ```
 
-in OOP, we have objects that have methods we can call on them (using the (.)
-notation), while in Haskell, we have functions that we can compose.
+in OOP, we have objects that have methods we can call on them (using the
+`(.)` notation), while in Haskell, we have functions that we can
+compose.
 
-warning: using pointfree style is nice because it enables you to write things
-very compactly. the cost of this, however, is that your code becomes difficult
-to read. protip: use composition sparingly because you always have to write
-code for others to read.
+warning: using pointfree style is nice because it enables you to write
+things very compactly. the cost of this, however, is that your code
+becomes difficult to read. protip: use composition sparingly because you
+always have to write code for others to read.
 
 ## all
 the function `all` decides if every element of a list satisfies a given predicate.
